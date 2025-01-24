@@ -1,15 +1,15 @@
-import { Text, View } from "react-native";
+import { Text, ImageBackground, StyleSheet } from "react-native";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>HI.tsx to edit this screen.</Text>
-    </View>
+    <ImageBackground source={require('./resources/bg.png')} resizeMode="cover" style={styles.image}>
+      <Text>HI.tsx to edit asdasd screen.</Text>
+    </ImageBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+  }
+});
