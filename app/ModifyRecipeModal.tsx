@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface ModalProps {
@@ -18,6 +18,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
   const [hasNameError, setHasNameError] = useState(false);
   const [hasTagsError, setHasTagsError] = useState(false);
   const [hasImageUrl, setHasImageUrl] = useState(false);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const handleSave = () => {
     if (name !== '' && tags !== '' && imageUrl != ''){
@@ -40,6 +41,21 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     //const text = await Clipboard.getImage();
     setImageUrl('text');
   };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => handleClose()}>
@@ -77,7 +93,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
               <Text style={styles.buttonText}>Fotó</Text>
           </TouchableOpacity>
           </View>
-          {imageUrl !== '' ? 
+          {imageUrl !== '' && !isKeyboardVisible ? 
                 <Image source={{ uri: imageUrl }} style={styles.image}/>: null} 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 50, marginBottom: 20 }}>
           <TouchableOpacity onPress={handleClose} style={{marginLeft:24}}>
@@ -134,7 +150,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
-    width: `100%`
+    width: `100%`,
+    height: 50
   },
   inputError: {
     borderWidth: 1,

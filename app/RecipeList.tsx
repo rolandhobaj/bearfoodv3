@@ -35,6 +35,8 @@ const RecipeList: React.FC = () => {
       .then(() => {
         const recipes: CardItem[] = [
           { id: "13", title: "Pityoklé", tags: ["Leves", "Regnyuzsi"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
+          { id: "131", title: "Főzelék", tags: ["Főétel"], imageUri: "https://cdn.mindmegette.hu/2024/02/tyevJlIAvPZiXUZJZOSac3tiw4c-nYzyVp0JF8p0J5Y/fill/0/0/no/1/aHR0cHM6Ly9jbXNjZG4uYXBwLmNvbnRlbnQucHJpdmF0ZS9jb250ZW50L2Y1ZDEwYWFmYjlmYjQ2NjFiOTExMzJlZGQ5OGY1Mjhm.webp" },
+          { id: "132", title: "Cukorka", tags: ["Desszert"], imageUri: "https://csokibolt.hu/img/5146/7878/7878.jpg" },
         ];
 
         setRecipes(recipes);
