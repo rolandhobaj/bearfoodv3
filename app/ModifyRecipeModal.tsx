@@ -83,14 +83,17 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
               style={hasImageUrl ? styles.inputError : styles.input}
             />
           <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={styles.button} onPress={() => setImageUrl('')}>
+            <Icon name="delete" size={32} color="white" />
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={fetchCopiedImage}>
-              <Text style={styles.buttonText}>Beillesztés</Text>
+            <Icon name="content-paste-go" size={32} color="white" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => setImageUrl('')}>
-              <Text style={styles.buttonText}>Törlés</Text>
+            <Icon name="photo-camera" size={32} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={fetchCopiedImage}>
-              <Text style={styles.buttonText}>Fotó</Text>
+          <TouchableOpacity style={styles.button} onPress={() => setImageUrl('')}>
+            <Icon name="image" size={32} color="white" />
           </TouchableOpacity>
           </View>
           {imageUrl !== '' && !isKeyboardVisible ? 
@@ -171,10 +174,12 @@ const styles = StyleSheet.create({
   button: {
     flex:1,
     backgroundColor: '#4E787D',
-    padding: 8,
+    padding: 4,
     borderRadius: 5,
     margin: 2,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
     color: 'white',
