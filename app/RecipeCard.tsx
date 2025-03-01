@@ -15,7 +15,7 @@ const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri }) => {
   const isNewItem = false;
 
   return (
-    <TouchableOpacity style={{width:'48%', marginLeft:3 }} onPress={() => {setIsVisible(true)}}>
+    <TouchableOpacity style={{width:'50%' }} onPress={() => {setIsVisible(true)}}>
     <Card containerStyle={styles.card}>
       <Card.Image 
        source={{ uri: imageUri }}
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     marginTop:4,
     marginBottom:-3,
     color: 'white',
-    fontSize: 25
+    fontSize: 16
   }
 });
 

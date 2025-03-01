@@ -4,26 +4,20 @@ import {getFirestore} from 'firebase/firestore';
 import {collection, getDocs} from 'firebase/firestore';
 
 import { CardItem } from '.././CardItem';
-import { Double } from 'react-native/Libraries/Types/CodegenTypes';
-
 const db = getFirestore(app);
-
-function getRandomInt(min :Double, max: Double) :string {
-  return (Math.floor(Math.random() * (max - min + 1)) + min).toString();
-}
 
 export default class RecipeService {
 
   static async getAllRecipe() {
-    const querySnapshot = await getDocs(collection(db, 'recipes'));
+    const querySnapshot = await getDocs(collection(db, 'recipesV2'));
 
     return querySnapshot.docs.map(d => {
       var data = d.data();
       return {
-        id: getRandomInt(0, 100000),
-        title: data.name,
+        id: data.id,
+        title: data.title,
         tags: !Array.isArray(data.tags) ? data.tags.split(',').map((x : string) => x.trim()) : data.tags,
-        imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png"
+        imageUri: data.imageUri
     } as CardItem;
     })
   }

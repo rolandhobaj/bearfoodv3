@@ -3,6 +3,7 @@ import { View, FlatList, Text } from 'react-native';
 import { CardItem } from './CardItem';
 import RecipeCard from './RecipeCard';
 import AutoFillTextBox from './AutoFillTextbox';
+import RecipeService from './Service/RecipeService';
 
 function removeHungarianAccents(input: string): string {
   const hungarianAccentsMap: {[key: string]: string} = {
@@ -31,15 +32,10 @@ const RecipeList: React.FC = () => {
 
   const loadRecipes = () => {
     setIsLoading(true);
-    delay(500)
-      .then(() => {
-        const recipes: CardItem[] = [
-          { id: "13", title: "Pityoklé", tags: ["Leves", "Regnyuzsi"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "131", title: "Főzelék", tags: ["Főétel"], imageUri: "https://cdn.mindmegette.hu/2024/02/tyevJlIAvPZiXUZJZOSac3tiw4c-nYzyVp0JF8p0J5Y/fill/0/0/no/1/aHR0cHM6Ly9jbXNjZG4uYXBwLmNvbnRlbnQucHJpdmF0ZS9jb250ZW50L2Y1ZDEwYWFmYjlmYjQ2NjFiOTExMzJlZGQ5OGY1Mjhm.webp" },
-          { id: "132", title: "Cukorka", tags: ["Desszert"], imageUri: "https://csokibolt.hu/img/5146/7878/7878.jpg" },
-        ];
 
-        setRecipes(recipes);
+    RecipeService.getAllRecipe()
+      .then((recipes) => {
+        setRecipes(recipes.sort((a, b) => a.title.localeCompare(b.title)));
         setIsLoading(false);
       });
   }
