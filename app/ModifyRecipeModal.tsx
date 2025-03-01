@@ -37,9 +37,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose }
     //const text = await Clipboard.getImage();
     setImageUrl('text');
   };
-
-  console.log(isNewItem)
-
+  
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => handleClose()}>
       <View style={styles.modalContainer}>

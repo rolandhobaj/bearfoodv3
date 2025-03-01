@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         backgroundColor: 'white',
         borderRadius: 5,
-        fontSize: 20,
+        fontSize: 18,
         borderColor: 'rgba(18,57,6,0.35)',
         borderWidth: 3,
         verticalAlign: 'middle',
