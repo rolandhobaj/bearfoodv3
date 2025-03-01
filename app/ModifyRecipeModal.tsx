@@ -54,6 +54,16 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     }
   };
 
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: false,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImageUrl(result.assets[0].uri);
+    }
+  };
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -105,7 +115,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
           <TouchableOpacity style={styles.button} onPress={takePhoto}>
             <Icon name="photo-camera" size={32} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => setImageUrl('')}>
+          <TouchableOpacity style={styles.button} onPress={pickImage}>
             <Icon name="image" size={32} color="white" />
           </TouchableOpacity>
           </View>
