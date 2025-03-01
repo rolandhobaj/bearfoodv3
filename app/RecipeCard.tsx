@@ -6,9 +6,10 @@ import ModifyRecipeModal from './ModifyRecipeModal';
 interface CardProps {
   title: string;
   imageUri: string;
+  tags: string
 }
 
-const RecipeCard: React.FC<CardProps> = ({ title, imageUri }) => {
+const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const isNewItem = false;
@@ -21,7 +22,11 @@ const RecipeCard: React.FC<CardProps> = ({ title, imageUri }) => {
        style={styles.cardImage} />
       <Card.Title style={styles.text}>{title}</Card.Title>
     </Card>
-    <ModifyRecipeModal isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>
+    {isVisible && <ModifyRecipeModal 
+      originalName={title}
+      originalTags={tags}
+      originalImage={imageUri}
+      isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>}
     </TouchableOpacity>
   );
 };

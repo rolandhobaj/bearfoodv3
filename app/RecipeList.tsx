@@ -34,18 +34,7 @@ const RecipeList: React.FC = () => {
     delay(500)
       .then(() => {
         const recipes: CardItem[] = [
-          { id: "13", title: "Pityoklé", tags: ["Leves"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "14", title: "Sűrű", tags: ["Főétel"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "15", title: "CukrosPityóka", tags: ["Desszert"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "131", title: "Pityoklé", tags: ["Leves"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "142", title: "Sűrű", tags: ["Főétel"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "153", title: "CukrosPityóka", tags: ["Desszert"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "134", title: "Pityoklé", tags: ["Leves"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "145", title: "Sűrű", tags: ["Főétel"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "156", title: "CukrosPityóka", tags: ["Desszert"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "137", title: "Pityoklé", tags: ["Leves"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "148", title: "Sűrű", tags: ["Főétel"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
-          { id: "159", title: "CukrosPityóka", tags: ["Desszert"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
+          { id: "13", title: "Pityoklé", tags: ["Leves", "Regnyuzsi"], imageUri: "https://promova.com/content/fast_food_names_d368a9810d.png" },
         ];
 
         setRecipes(recipes);
@@ -80,7 +69,7 @@ const RecipeList: React.FC = () => {
           </View>
         : <FlatList
             data={filteredRecipes}
-            renderItem={(renderItem) => <RecipeCard title={renderItem.item.title} imageUri={renderItem.item.imageUri}/>}
+            renderItem={(renderItem) => <RecipeCard title={renderItem.item.title} tags={renderItem.item.tags.join(', ')} imageUri={renderItem.item.imageUri}/>}
             keyExtractor={(item) => item.id}
             numColumns={2}
             refreshing={isLoading}

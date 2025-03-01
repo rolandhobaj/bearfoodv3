@@ -9,7 +9,7 @@ const RoundButton: React.FC = ({ }) => {
   return (
     <TouchableOpacity style={styles.buttonContainer} onPress={() => setIsVisible(true)}>
         <Text style={styles.buttonText}>+</Text>
-        <ModifyRecipeModal isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>
+        {isVisible && <ModifyRecipeModal  originalName = '' originalTags = '' originalImage= ''  isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>}
     </TouchableOpacity>
   );
 };

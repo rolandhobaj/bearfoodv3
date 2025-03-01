@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -6,12 +6,15 @@ interface ModalProps {
   isNewItem: boolean;
   visible: boolean;
   onClose: () => void;
+  originalName: string,
+  originalTags: string,
+  originalImage: string
 }
 
-const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose }) => {
-  const [name, setName] = useState('');
-  const [tags, setTags] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, originalName, originalTags, originalImage}) => {
+  const [name, setName] = useState(originalName);
+  const [tags, setTags] = useState(originalTags);
+  const [imageUrl, setImageUrl] = useState(originalImage);
   const [hasNameError, setHasNameError] = useState(false);
   const [hasTagsError, setHasTagsError] = useState(false);
   const [hasImageUrl, setHasImageUrl] = useState(false);
@@ -37,7 +40,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose }
     //const text = await Clipboard.getImage();
     setImageUrl('text');
   };
-  
+
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => handleClose()}>
       <View style={styles.modalContainer}>

@@ -1,6 +1,6 @@
 export interface CardItem {
   id: string;
   title: string;
-  tags: [string];
+  tags: string[];
   imageUri: string;
 }
