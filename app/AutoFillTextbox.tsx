@@ -27,7 +27,7 @@ const AutoFillTextBox: React.FC<AutoFillTextBoxProps> = ({ onOptionSelected }) =
             value={text}
             onChangeText={handleTextChange}
             style={styles.text}
-            placeholder="Szűrj kategóriára.."
+            placeholder="Szűrj kategóriára..."
         />
         {text !== '' && (
           <TouchableOpacity style={{ position: 'absolute', right: '5%' }} onPress={handleClearText}>
