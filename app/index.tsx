@@ -1,5 +1,4 @@
-import { Text, ImageBackground, StyleSheet } from "react-native";
-import { CardItem } from "./CardItem";
+import { ImageBackground, StyleSheet } from "react-native";
 import RecipeList from "./RecipeList";
 import NewRecipeButton from "./NewRecipeButton";
 

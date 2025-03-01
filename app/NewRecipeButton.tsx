@@ -5,10 +5,11 @@ import ModifyRecipeModal from './ModifyRecipeModal';
 const RoundButton: React.FC = ({ }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
+  const isNewItem = true;
   return (
     <TouchableOpacity style={styles.buttonContainer} onPress={() => setIsVisible(true)}>
         <Text style={styles.buttonText}>+</Text>
-        <ModifyRecipeModal visible={isVisible} onClose={() => setIsVisible(false)}/>
+        <ModifyRecipeModal isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>
     </TouchableOpacity>
   );
 };

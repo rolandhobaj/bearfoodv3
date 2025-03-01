@@ -41,7 +41,7 @@ const AutoFillTextBox: React.FC<AutoFillTextBoxProps> = ({ onOptionSelected }) =
           <Text style={styles.label}>Leves</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleTextChange('Regnyuzsi')}>
-          <Text style={styles.label}>Főétel</Text>
+          <Text style={styles.label}>Regnyuzsi</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleTextChange('Főétel')}>
           <Text style={styles.label}>Főétel</Text>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
       },
     label: {
-        paddingHorizontal: 10,
+        paddingHorizontal: 6,
         paddingVertical: 5,
         backgroundColor: 'white',
         borderRadius: 5,

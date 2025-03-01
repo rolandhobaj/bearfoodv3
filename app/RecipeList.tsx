@@ -4,10 +4,6 @@ import { CardItem } from './CardItem';
 import RecipeCard from './RecipeCard';
 import AutoFillTextBox from './AutoFillTextbox';
 
-interface CardListProps {
-  recipes: CardItem[];
-}
-
 function removeHungarianAccents(input: string): string {
   const hungarianAccentsMap: {[key: string]: string} = {
       'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ö': 'o', 'ő': 'o', 'ú': 'u', 'ü': 'u', 'ű': 'u',
@@ -27,8 +23,8 @@ function removeHungarianAccents(input: string): string {
 function delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
 }
-
-const RecipeList: React.FC<CardListProps> = () => {
+  
+const RecipeList: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [recipes, setRecipes] = useState<CardItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false)

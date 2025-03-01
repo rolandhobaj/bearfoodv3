@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface ModalProps {
+  isNewItem: boolean;
   visible: boolean;
   onClose: () => void;
 }
 
-const ModifyRecipeModal: React.FC<ModalProps> = ({ visible, onClose }) => {
+const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose }) => {
   const [name, setName] = useState('');
   const [tags, setTags] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -31,14 +33,15 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ visible, onClose }) => {
     onClose();
   }
 
-
   const fetchCopiedImage = async () => {
     //const text = await Clipboard.getImage();
     setImageUrl('text');
   };
 
+  console.log(isNewItem)
+
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={() => handleClose()}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.title}>Recept hozzáadása</Text>
@@ -76,11 +79,17 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ visible, onClose }) => {
           {imageUrl !== '' ? 
                 <Image source={{ uri: imageUrl }} style={styles.image}/>: null} 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 50, marginBottom: 20 }}>
-          <TouchableOpacity onPress={handleClose}>
+          <TouchableOpacity onPress={handleClose} style={{marginLeft:24}}>
+            <Icon name="close" size={40} color="red" />
           </TouchableOpacity>
+          {!isNewItem ?
           <TouchableOpacity onPress={handleClose}>
+            <Icon name="delete" size={40} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleSave}>
+          : null
+          }
+          <TouchableOpacity onPress={handleSave} style={{marginRight:30}}>
+            <Icon name="check" size={40} color="green" />
           </TouchableOpacity>
         </View>
         </View>
