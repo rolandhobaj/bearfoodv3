@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as Clipboard from 'expo-clipboard';
 
 interface ModalProps {
   isNewItem: boolean;
@@ -38,8 +39,8 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
   }
 
   const fetchCopiedImage = async () => {
-    //const text = await Clipboard.getImage();
-    setImageUrl('text');
+    const image = await Clipboard.getImageAsync({format: 'jpeg'});
+    setImageUrl(image?.data ?? '');
   };
 
   useEffect(() => {
