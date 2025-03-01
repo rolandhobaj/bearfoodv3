@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Clipboard from 'expo-clipboard';
+import * as ImagePicker from "expo-image-picker";
 
 interface ModalProps {
   isNewItem: boolean;
@@ -42,6 +43,17 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     const image = await Clipboard.getImageAsync({format: 'jpeg'});
     setImageUrl(image?.data ?? '');
   };
+  const takePhoto = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: false,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImageUrl(result.assets[0].uri);
+    }
+  };
+
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -90,7 +102,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
           <TouchableOpacity style={styles.button} onPress={fetchCopiedImage}>
             <Icon name="content-paste-go" size={32} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => setImageUrl('')}>
+          <TouchableOpacity style={styles.button} onPress={takePhoto}>
             <Icon name="photo-camera" size={32} color="white" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => setImageUrl('')}>
