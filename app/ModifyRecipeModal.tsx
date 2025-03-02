@@ -34,16 +34,30 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     if (name !== '' && tags !== '' && imageUrl != ''){
       setIsLoading(true)
       handleClose()
-      RecipeService.addRecipe({
-        title: name,
-        tags: tags.split(',').map(t => t.trim()),
-        imageUri: imageUrl,
-        id: 'toBeGenerated'
-      }).then(() => {
-        setHasNameError(name === '');
-        setHasTagsError(tags === '');
-        setHasImageUrl(imageUrl === '');
-        refreshList()        
+      
+      if (isNewItem){  
+        RecipeService.addRecipe({
+          title: name,
+          tags: tags.split(',').map(t => t.trim()),
+          imageUri: imageUrl,
+          id: 'toBeGenerated'
+        }).then(() => {
+          refreshList()        
+        })
+
+        return
+      }
+
+      RecipeService.deleteItem(id, originalImage, !imageUrl.includes('firebasestorage'))
+      .then(() => {
+        RecipeService.addRecipe({
+          title: name,
+          tags: tags.split(',').map(t => t.trim()),
+          imageUri: imageUrl,
+          id: 'toBeGenerated'
+        }).then(() => {
+          refreshList()        
+        })
       })
     }
   };
@@ -58,11 +72,8 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
   const deleteRecipe = () => {
     setIsLoading(true)
     handleClose()
-    RecipeService.deleteItem(id, originalImage)
+    RecipeService.deleteItem(id, originalImage, true)
     .then(() => {
-      setHasNameError(name === '');
-      setHasTagsError(tags === '');
-      setHasImageUrl(imageUrl === '');
       refreshList()
     })
   }

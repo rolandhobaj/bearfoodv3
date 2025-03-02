@@ -40,13 +40,17 @@ export default class RecipeService {
     try{
 
     const fileName = newId + '.jpg';
-    const url = await this.uploadBase64AsBlob(recipe.imageUri, fileName);  
+    let imageUri = recipe.imageUri
+
+    if (!imageUri.includes('firebasestorage')){
+      imageUri = await this.uploadBase64AsBlob(recipe.imageUri, fileName);  
+    }
 
     await setDoc(doc(db, 'recipesV2', newId), {
       id: newId,
       title: recipe.title,
       tags: recipe.tags.join(', '),
-      imageUri: url,
+      imageUri: imageUri,
     });
 
     }catch(e){
@@ -54,7 +58,7 @@ export default class RecipeService {
     }
   }
 
-  static async uploadBase64AsBlob(base64String: string, filePath: string) {
+  static async uploadBase64AsBlob(base64String: string, filePath: string) : Promise<string> {
     try {
       const fileUri = FileSystem.cacheDirectory + "tempImage.jpg";
   
@@ -76,6 +80,8 @@ export default class RecipeService {
     } catch (error) {
       console.error("Hiba történt:", error);
     }
+
+    return ''
   };
 
   static async uploadFile(filepath: string, filename: string) {
@@ -102,8 +108,12 @@ export default class RecipeService {
     });
   }
 
-  static async deleteItem(id:string, imageUrl: string) {
+  static async deleteItem(id:string, imageUrl: string, deleteImage: boolean) {
     await deleteDoc(doc(db, 'recipesV2', id));
+
+    if (!deleteImage){
+      return
+    }
 
     const fileName = this.getFileNameFromUrl(imageUrl)
     
