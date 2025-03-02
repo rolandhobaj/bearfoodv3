@@ -21,10 +21,6 @@ function removeHungarianAccents(input: string): string {
   return output;
 }
 
-function delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
-}
-  
 const RecipeList: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [recipes, setRecipes] = useState<CardItem[]>([]);

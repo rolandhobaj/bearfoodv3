@@ -3,6 +3,7 @@ import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Keyb
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from "expo-image-picker";
+import RecipeService from './Service/RecipeService';
 
 interface ModalProps {
   isNewItem: boolean;
@@ -23,13 +24,22 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const handleSave = () => {
+    console.log('start to save')
     if (name !== '' && tags !== '' && imageUrl != ''){
-      handleClose()
-    }
+      RecipeService.addRecipe({
+        title: name,
+        tags: tags.split(',').map(t => t.trim()),
+        imageUri: imageUrl,
+        id: 'toBeGenerated'
+      }).then(() => {
+        handleClose()
 
-    setHasNameError(name === '');
-    setHasTagsError(tags === '');
-    setHasImageUrl(imageUrl === '');
+        setHasNameError(name === '');
+        setHasTagsError(tags === '');
+        setHasImageUrl(imageUrl === '');
+    
+      })
+    }
   };
 
   const handleClose = () => {
