@@ -16,6 +16,7 @@ const RoundButton: React.FC<ModalProps> = ({ refreshList, setIsLoading }) => {
         <Text style={styles.buttonText}>+</Text>
         {isVisible && <ModifyRecipeModal 
         setIsLoading={setIsLoading}
+        id=''
         refreshList={refreshList}  originalName = '' originalTags = '' originalImage= ''  isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>}
     </TouchableOpacity>
   );

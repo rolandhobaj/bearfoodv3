@@ -3,8 +3,8 @@ import {getFirestore} from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import * as FileSystem from "expo-file-system";
 
-import {collection, getDocs, setDoc, doc} from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL, uploadString } from 'firebase/storage';
+import {collection, getDocs, setDoc, doc, deleteDoc} from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 import { CardItem } from '.././CardItem';
 
@@ -101,6 +101,31 @@ export default class RecipeService {
       xhr.send();
     });
   }
+
+  static async deleteItem(id:string, imageUrl: string) {
+    await deleteDoc(doc(db, 'recipesV2', id));
+
+    const fileName = this.getFileNameFromUrl(imageUrl)
+    
+    if (fileName === ''){
+      return
+    }
+
+    const desertRef = ref(storage, fileName);
+    await deleteObject(desertRef);
+  }
+
+  static getFileNameFromUrl = (url: string): string => {
+    try {
+      const decodedUrl = decodeURIComponent(url);
+      const match = decodedUrl.match(/\/o\/(.*?)\?/);
+      return match ? match[1] : '';
+    } catch (error) {
+      console.error("Error extracting file name:", error);
+      return '';
+    }
+  };
+  
 
   /*static async deleteItem(recipeName, imageName, whenDone, deleteImage = true) {
     await deleteDoc(doc(db, 'recipes', recipeName));

@@ -9,6 +9,7 @@ interface ModalProps {
   isNewItem: boolean;
   visible: boolean;
   onClose: () => void;
+  id: string;
   originalName: string,
   originalTags: string,
   originalImage: string
@@ -16,7 +17,7 @@ interface ModalProps {
   setIsLoading: (value: boolean) => void
 }
 
-const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, originalName, originalTags, originalImage, refreshList, setIsLoading}) => {
+const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, id, originalName, originalTags, originalImage, refreshList, setIsLoading}) => {
   const [name, setName] = useState(originalName);
   const [tags, setTags] = useState(originalTags);
   const [imageUrl, setImageUrl] = useState(originalImage);
@@ -48,6 +49,18 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     setTags('');
     setImageUrl('');
     onClose();
+  }
+
+  const deleteRecipe = () => {
+    setIsLoading(true)
+    handleClose()
+    RecipeService.deleteItem(id, originalImage)
+    .then(() => {
+      setHasNameError(name === '');
+      setHasTagsError(tags === '');
+      setHasImageUrl(imageUrl === '');
+      refreshList()
+    })
   }
 
   const fetchCopiedImage = async () => {
@@ -137,7 +150,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
             <Icon name="close" size={40} color="red" />
           </TouchableOpacity>
           {!isNewItem ?
-          <TouchableOpacity onPress={handleClose}>
+          <TouchableOpacity onPress={deleteRecipe}>
             <Icon name="delete" size={40} color="black" />
           </TouchableOpacity>
           : null

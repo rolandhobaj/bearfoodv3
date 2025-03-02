@@ -7,11 +7,12 @@ interface CardProps {
   title: string;
   imageUri: string;
   tags: string;
+  id: string;
   refreshList: () => void
   setIsLoading: (value: boolean) =>void
 }
 
-const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, refreshList, setIsLoading }) => {
+const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, id, refreshList, setIsLoading }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const isNewItem = false;
@@ -24,7 +25,8 @@ const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, refreshList, s
        style={styles.cardImage} />
       <Card.Title style={styles.text}>{title}</Card.Title>
     </Card>
-    {isVisible && <ModifyRecipeModal 
+    {isVisible && <ModifyRecipeModal
+      id={id} 
       originalName={title}
       originalTags={tags}
       originalImage={imageUri}
