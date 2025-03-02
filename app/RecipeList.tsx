@@ -4,6 +4,7 @@ import { CardItem } from './CardItem';
 import RecipeCard from './RecipeCard';
 import AutoFillTextBox from './AutoFillTextbox';
 import RecipeService from './Service/RecipeService';
+import NewRecipeButton from './NewRecipeButton';
 
 function removeHungarianAccents(input: string): string {
   const hungarianAccentsMap: {[key: string]: string} = {
@@ -63,13 +64,16 @@ const RecipeList: React.FC = () => {
           </View>
         : <FlatList
             data={filteredRecipes}
-            renderItem={(renderItem) => <RecipeCard title={renderItem.item.title} tags={renderItem.item.tags.join(', ')} imageUri={renderItem.item.imageUri}/>}
+            renderItem={(renderItem) => <RecipeCard 
+              setIsLoading={setIsLoading}
+              title={renderItem.item.title} tags={renderItem.item.tags.join(', ')} imageUri={renderItem.item.imageUri} refreshList={loadRecipes}/>}
             keyExtractor={(item) => item.id}
             numColumns={2}
             refreshing={isLoading}
             onRefresh={loadRecipes}
           />
       }
+      <NewRecipeButton refreshList={loadRecipes} setIsLoading={setIsLoading}/>
     </View>
   );
 };

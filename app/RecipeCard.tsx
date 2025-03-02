@@ -6,10 +6,12 @@ import ModifyRecipeModal from './ModifyRecipeModal';
 interface CardProps {
   title: string;
   imageUri: string;
-  tags: string
+  tags: string;
+  refreshList: () => void
+  setIsLoading: (value: boolean) =>void
 }
 
-const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri }) => {
+const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, refreshList, setIsLoading }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const isNewItem = false;
@@ -26,6 +28,8 @@ const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri }) => {
       originalName={title}
       originalTags={tags}
       originalImage={imageUri}
+      refreshList={refreshList}
+      setIsLoading={setIsLoading}
       isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>}
     </TouchableOpacity>
   );

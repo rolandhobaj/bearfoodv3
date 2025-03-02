@@ -54,7 +54,7 @@ export default class RecipeService {
     }
   }
 
-  static async uploadBase64AsBlob (base64String: string, filePath: string) {
+  static async uploadBase64AsBlob(base64String: string, filePath: string) {
     try {
       const fileUri = FileSystem.cacheDirectory + "tempImage.jpg";
   

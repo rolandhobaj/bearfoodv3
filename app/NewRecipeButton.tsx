@@ -2,14 +2,21 @@ import React, {useState} from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import ModifyRecipeModal from './ModifyRecipeModal';
 
-const RoundButton: React.FC = ({ }) => {
+interface ModalProps {
+  refreshList: () => void;
+  setIsLoading: (value: boolean) => void;
+}
+
+const RoundButton: React.FC<ModalProps> = ({ refreshList, setIsLoading }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const isNewItem = true;
   return (
     <TouchableOpacity style={styles.buttonContainer} onPress={() => setIsVisible(true)}>
         <Text style={styles.buttonText}>+</Text>
-        {isVisible && <ModifyRecipeModal  originalName = '' originalTags = '' originalImage= ''  isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>}
+        {isVisible && <ModifyRecipeModal 
+        setIsLoading={setIsLoading}
+        refreshList={refreshList}  originalName = '' originalTags = '' originalImage= ''  isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>}
     </TouchableOpacity>
   );
 };

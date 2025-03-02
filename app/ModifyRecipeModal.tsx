@@ -12,9 +12,11 @@ interface ModalProps {
   originalName: string,
   originalTags: string,
   originalImage: string
+  refreshList: () => void;
+  setIsLoading: (value: boolean) => void
 }
 
-const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, originalName, originalTags, originalImage}) => {
+const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, originalName, originalTags, originalImage, refreshList, setIsLoading}) => {
   const [name, setName] = useState(originalName);
   const [tags, setTags] = useState(originalTags);
   const [imageUrl, setImageUrl] = useState(originalImage);
@@ -24,7 +26,8 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const handleSave = () => {
-    console.log('start to save')
+    setIsLoading(true)
+    handleClose()
     if (name !== '' && tags !== '' && imageUrl != ''){
       RecipeService.addRecipe({
         title: name,
@@ -32,12 +35,10 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
         imageUri: imageUrl,
         id: 'toBeGenerated'
       }).then(() => {
-        handleClose()
-
         setHasNameError(name === '');
         setHasTagsError(tags === '');
         setHasImageUrl(imageUrl === '');
-    
+        refreshList()        
       })
     }
   };
