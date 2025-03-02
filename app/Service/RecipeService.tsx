@@ -39,19 +39,19 @@ export default class RecipeService {
     const newId = generateUUID(32);
     try{
 
-    await this.uploadBase64AsBlob(recipe.imageUri, newId + '.jpg');  
+    const fileName = newId + '.jpg';
+    const url = await this.uploadBase64AsBlob(recipe.imageUri, fileName);  
 
-    /*await setDoc(doc(db, 'recipesV2', newId), {
-      id: recipe.id,
+    await setDoc(doc(db, 'recipesV2', newId), {
+      id: newId,
       title: recipe.title,
-      tags: recipe.tags,
-      imageName: recipe.imageUri,
-    });*/
+      tags: recipe.tags.join(', '),
+      imageUri: url,
+    });
+
     }catch(e){
       console.log('ERROR' + e)
     }
-
-    //await this.uploadFile(recipe.imageUri, newId);
   }
 
   static async uploadBase64AsBlob (base64String: string, filePath: string) {
@@ -67,10 +67,12 @@ export default class RecipeService {
         encoding: FileSystem.EncodingType.Base64,
       });
   
-      this.uploadFile(fileUri, filePath);
+      const downloadUrl = this.uploadFile(fileUri, filePath);
   
       // Fájl törlése a cache-ből
       await FileSystem.deleteAsync(fileUri, { idempotent: true });
+
+      return downloadUrl
     } catch (error) {
       console.error("Hiba történt:", error);
     }
@@ -78,7 +80,11 @@ export default class RecipeService {
 
   static async uploadFile(filepath: string, filename: string) {
     const blob = await this.urlToBlob(filepath);
-    await uploadBytes(ref(storage, filename), blob);
+    const storageRef = ref(storage, filename)
+
+    await uploadBytes(storageRef, blob);
+    const downloadUrl = await getDownloadURL(storageRef);
+    return downloadUrl
   }
 
   static urlToBlob(url: string) : Promise<Blob>{
