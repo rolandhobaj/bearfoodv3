@@ -27,9 +27,13 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const handleSave = () => {
-    setIsLoading(true)
-    handleClose()
+    setHasNameError(name === '');
+    setHasTagsError(tags === '');
+    setHasImageUrl(imageUrl === '');
+
     if (name !== '' && tags !== '' && imageUrl != ''){
+      setIsLoading(true)
+      handleClose()
       RecipeService.addRecipe({
         title: name,
         tags: tags.split(',').map(t => t.trim()),
@@ -208,6 +212,7 @@ const styles = StyleSheet.create({
     borderColor: 'red',
     borderRadius: 5,
     padding: 10,
+    height: 50,
     marginBottom: 10,
     width: `100%`
   },
