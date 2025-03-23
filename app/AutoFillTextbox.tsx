@@ -31,7 +31,7 @@ const AutoFillTextBox: React.FC<AutoFillTextBoxProps> = ({ onOptionSelected }) =
         />
         {text !== '' && (
           <TouchableOpacity style={{ position: 'absolute', right: '5%' }} onPress={handleClearText}>
-            <Text style={{ fontSize:22, fontWeight:'bold', marginTop:6 }}>X</Text>
+            <Text style={{ fontSize:25, marginTop:10, marginRight: 7, color:'gray' }}>X</Text>
           </TouchableOpacity>
         )}
       </View>
