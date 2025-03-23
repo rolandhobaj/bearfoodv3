@@ -58,19 +58,22 @@ export default class RecipeService {
     }
   }
 
-  static async uploadBase64AsBlob(base64String: string, filePath: string) : Promise<string> {
+  static async uploadBase64AsBlob(image: string, filePath: string) : Promise<string> {
     try {
-      const fileUri = FileSystem.cacheDirectory + "tempImage.jpg";
+      let fileUri = image;
+      if (!image.startsWith('file://')){
+        fileUri = FileSystem.cacheDirectory + "tempImage.jpg";
   
-      const base64Data = base64String.includes("base64,")
-      ? base64String.split("base64,")[1]
-      : base64String;
+        const base64Data = image.includes("base64,")
+        ? image.split("base64,")[1]
+        : image;
 
-      // Base64 konvertálása fájllá
-      await FileSystem.writeAsStringAsync(fileUri, base64Data, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-  
+        // Base64 konvertálása fájllá
+        await FileSystem.writeAsStringAsync(fileUri, base64Data, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+      }
+      
       const downloadUrl = this.uploadFile(fileUri, filePath);
   
       // Fájl törlése a cache-ből
