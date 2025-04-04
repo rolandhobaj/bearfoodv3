@@ -10,7 +10,8 @@ export default function RootLayout() {
           return <Icon name={iconName} size={32} color="rgba(18,57,6, 0.9)" />;
         },
         tabBarActiveTintColor: "rgba(18,57,6, 0.9)",
-        tabBarInactiveTintColor: "gray",
+        tabBarInactiveTintColor: "white",
+        tabBarInactiveBackgroundColor:'gray',
         headerShown: false,
       })}
     >
