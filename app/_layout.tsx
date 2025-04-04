@@ -11,7 +11,7 @@ export default function RootLayout() {
         },
         tabBarActiveTintColor: "rgba(18,57,6, 0.9)",
         tabBarInactiveTintColor: "white",
-        tabBarInactiveBackgroundColor:'gray',
+        tabBarInactiveBackgroundColor:'rgba(135,135,135, 0.6)',
         headerShown: false,
       })}
     >
