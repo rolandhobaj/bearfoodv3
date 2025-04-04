@@ -57,7 +57,7 @@ const MenuList: React.FC = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <AutoFillTextBox onOptionSelected={setSearchQuery} />
+      <AutoFillTextBox onOptionSelected={setSearchQuery} labels={["Leves", "Regnyuzsi", "Főétel"]}/>
       {isLoading
         ? <View style={{ flex: 1, alignItems: 'center' }}>
             <Text style={{ fontSize: 50 }}>Minnyá...</Text>

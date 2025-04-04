@@ -3,9 +3,10 @@ import { TextInput, View, Text, TouchableOpacity, StyleSheet, Keyboard } from 'r
 
 interface AutoFillTextBoxProps {
   onOptionSelected: (option: string) => void;
+  labels: string[]
 }
 
-const AutoFillTextBox: React.FC<AutoFillTextBoxProps> = ({ onOptionSelected }) => {
+const AutoFillTextBox: React.FC<AutoFillTextBoxProps> = ({ onOptionSelected, labels }) => {
   const [text, setText] = useState('');
 
   const handleTextChange = async (inputText: string) => {
@@ -36,17 +37,14 @@ const AutoFillTextBox: React.FC<AutoFillTextBoxProps> = ({ onOptionSelected }) =
       </View>
 
       <View style={styles.labelsContainer}>
-        <TouchableOpacity onPress={() => handleTextChange('Leves')}>
-          <Text style={styles.label}>Leves</Text>
+        <TouchableOpacity onPress={() => handleTextChange(labels[0])}>
+          <Text style={styles.label}>{labels[0]}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleTextChange('Regnyuzsi')}>
-          <Text style={styles.label}>Regnyuzsi</Text>
+        <TouchableOpacity onPress={() => handleTextChange(labels[1])}>
+          <Text style={styles.label}>{labels[1]}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleTextChange('Főétel')}>
-          <Text style={styles.label}>Főétel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleTextChange('Desszert')}>
-          <Text style={styles.label}>Desszert</Text>
+        <TouchableOpacity onPress={() => handleTextChange(labels[2])}>
+          <Text style={styles.label}>{labels[2]}</Text>
         </TouchableOpacity>
       </View>
 
@@ -78,14 +76,13 @@ const styles = StyleSheet.create({
     labelsContainer: {
         flexDirection: 'row',
         margin:10,
-        justifyContent: 'space-between',
       },
     label: {
         paddingHorizontal: 6,
         paddingVertical: 5,
         backgroundColor: 'white',
         borderRadius: 5,
-        fontSize: 18,
+        fontSize: 14,
         borderColor: 'rgba(18,57,6,0.35)',
         borderWidth: 3,
         verticalAlign: 'middle',
