@@ -22,7 +22,7 @@ function removeHungarianAccents(input: string): string {
   return output;
 }
 
-const RecipeList: React.FC = () => {
+const MenuList: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [recipes, setRecipes] = useState<CardItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -79,4 +79,4 @@ const RecipeList: React.FC = () => {
   );
 };
 
-export default RecipeList;
+export default MenuList;
