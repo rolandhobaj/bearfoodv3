@@ -9,7 +9,7 @@ export default function RootLayout() {
           let iconName = route.name === "index" ? "restaurant-menu" : "menu-book";
           return <Icon name={iconName} size={32} color="rgba(18,57,6, 0.9)" />;
         },
-        tabBarActiveTintColor: "tomato",
+        tabBarActiveTintColor: "rgba(18,57,6, 0.9)",
         tabBarInactiveTintColor: "gray",
         headerShown: false,
       })}
