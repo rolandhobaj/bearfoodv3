@@ -67,7 +67,7 @@ const MenuList: React.FC = () => {
             renderItem={(renderItem) => <RecipeCard 
               setIsLoading={setIsLoading}
               id={renderItem.item.id}
-              title={renderItem.item.title} tags={renderItem.item.tags.join(', ')} imageUri={renderItem.item.imageUri} refreshList={loadRecipes} isReadonly={false} recipe={''}/>}
+              title={renderItem.item.title} tags={renderItem.item.tags.join(', ')} imageUri={renderItem.item.imageUri} refreshList={loadRecipes} isReadonly={false} recipe={''} ingredients={''}/>}
             keyExtractor={(item) => item.id}
             numColumns={2}
             refreshing={isLoading}

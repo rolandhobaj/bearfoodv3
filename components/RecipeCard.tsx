@@ -10,12 +10,13 @@ interface CardProps {
   tags: string;
   id: string;
   recipe: string,
+  ingredients: string,
   isReadonly: boolean,
   refreshList: () => void
   setIsLoading: (value: boolean) =>void
 }
 
-const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, id, recipe, isReadonly, refreshList, setIsLoading }) => {
+const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, id, recipe, ingredients, isReadonly, refreshList, setIsLoading }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const isNewItem = false;
@@ -39,8 +40,7 @@ const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, id, recipe, is
     {(isVisible && isReadonly) && <RecipeDetailsModal
         id={id}
         originalName={title}
-        imageUrl={imageUri}
-        onClose={() => setIsVisible(false)} isVisible={isVisible} recipe={recipe}/>}
+        onClose={() => setIsVisible(false)} isVisible={isVisible} recipe={recipe} ingredients={ingredients}/>}
     </TouchableOpacity>
   );
 };

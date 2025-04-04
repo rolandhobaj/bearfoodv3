@@ -45,7 +45,8 @@ export default class RecipeService {
         title: data.name,
         tags: !Array.isArray(data.tags) ? data.tags.split(',').map((x : string) => x.trim()) : data.tags,
         imageUri: data.imageUri,
-        recipe: data.recipe
+        recipe: data.recipe,
+        ingredients: data.ingredients
     } as CardItem;
     })
   }

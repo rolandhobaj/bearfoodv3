@@ -67,7 +67,8 @@ const MenuList: React.FC = () => {
                 setIsLoading={setIsLoading}
                 id={renderItem.item.id}
                 title={renderItem.item.title} tags={renderItem.item.tags.join(', ')} imageUri={renderItem.item.imageUri} refreshList={loadRecipes}
-                isReadonly={true} recipe={renderItem.item.recipe ?? ''}/>}
+                isReadonly={true} recipe={renderItem.item.recipe ?? ''}
+                ingredients={renderItem.item.ingredients ?? ''}/>}
             keyExtractor={(item) => item.id}
             numColumns={2}
             refreshing={isLoading}

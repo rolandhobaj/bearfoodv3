@@ -4,4 +4,5 @@ export interface CardItem {
   tags: string[];
   imageUri: string;
   recipe?: string;
+  ingredients?: string;
 }

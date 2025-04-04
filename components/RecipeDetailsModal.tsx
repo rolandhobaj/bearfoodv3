@@ -6,11 +6,11 @@ interface ModalProps {
     onClose: () => void;
     id: string;
     originalName: string,
-    imageUrl: string,
-    recipe: string
+    recipe: string,
+    ingredients: string,
   }
 
-  const RecipeDetailsModal: React.FC<ModalProps> = ({ isVisible, onClose, id, originalName, imageUrl, recipe}) => {
+  const RecipeDetailsModal: React.FC<ModalProps> = ({ isVisible, onClose, id, originalName, recipe, ingredients}) => {
 
     const handleClose = () => {
       onClose();
@@ -22,8 +22,9 @@ interface ModalProps {
             <View style={styles.modalContent}>
               <Text style={styles.title}>{originalName}</Text>
               <ScrollView style={styles.scrollView}>
-                {imageUrl !== '' ? 
-                <Image source={{ uri: imageUrl }} style={styles.image}/>: null} 
+                <Text style={styles.header}>Hozzávalók:</Text>
+                <Text style={styles.textBox}>{ingredients}</Text>
+                <Text style={styles.header}>Elkészítés:</Text>
                 <Text style={styles.textBox}>{recipe}</Text>
               </ScrollView>
               <TouchableOpacity onPress={handleClose}>
@@ -62,6 +63,11 @@ interface ModalProps {
       textAlign: 'center',
       marginBottom: 10,
     },
+    header: {
+        fontSize: 15,
+        marginTop: 21,
+        fontWeight: 'bold',
+      },
     scrollView: {
         flexGrow: 1,
         height:'70%'
@@ -70,8 +76,9 @@ interface ModalProps {
         fontSize: 16,
         lineHeight: 24,
         backgroundColor: "#fff",
-        padding: 10,
+        padding:4,
         borderRadius: 8,
+        textAlign: 'justify'
       },
   });
   
