@@ -64,9 +64,10 @@ const MenuList: React.FC = () => {
         : <FlatList
             data={filteredRecipes}
             renderItem={(renderItem) => <RecipeCard 
-              setIsLoading={setIsLoading}
-              id= {renderItem.item.id}
-              title={renderItem.item.title} tags={renderItem.item.tags.join(', ')} imageUri={renderItem.item.imageUri} refreshList={loadRecipes}/>}
+                setIsLoading={setIsLoading}
+                id={renderItem.item.id}
+                title={renderItem.item.title} tags={renderItem.item.tags.join(', ')} imageUri={renderItem.item.imageUri} refreshList={loadRecipes}
+                isReadonly={true} recipe={renderItem.item.recipe ?? ''}/>}
             keyExtractor={(item) => item.id}
             numColumns={2}
             refreshing={isLoading}
