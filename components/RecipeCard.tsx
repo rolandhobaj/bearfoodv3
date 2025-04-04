@@ -39,6 +39,7 @@ const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, id, recipe, is
     {(isVisible && isReadonly) && <RecipeDetailsModal
         id={id}
         originalName={title}
+        imageUrl={imageUri}
         onClose={() => setIsVisible(false)} isVisible={isVisible} recipe={recipe}/>}
     </TouchableOpacity>
   );
