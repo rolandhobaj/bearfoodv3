@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       fontSize: 20,
       flex:1,
-      paddingLeft:14
+      paddingLeft:14,
+      height:'85%'
     },
     listText: {
         backgroundColor: 'white',
