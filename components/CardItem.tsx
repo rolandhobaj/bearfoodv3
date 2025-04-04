@@ -3,4 +3,5 @@ export interface CardItem {
   title: string;
   tags: string[];
   imageUri: string;
+  recipe?: string;
 }

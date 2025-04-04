@@ -35,6 +35,21 @@ export default class RecipeService {
     })
   }
 
+  static async getAllRecipeDescriptions() {
+    const querySnapshot = await getDocs(collection(db, 'recipeDescriptions'));
+
+    return querySnapshot.docs.map(d => {
+      var data = d.data();
+      return {
+        id: data.id,
+        title: data.name,
+        tags: !Array.isArray(data.tags) ? data.tags.split(',').map((x : string) => x.trim()) : data.tags,
+        imageUri: data.imageUri,
+        recipe: data.recipe
+    } as CardItem;
+    })
+  }
+
   static async addRecipe(recipe:CardItem) {
     const newId = generateUUID(32);
     try{

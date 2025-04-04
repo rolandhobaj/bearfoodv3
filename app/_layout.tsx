@@ -6,7 +6,7 @@ export default function RootLayout() {
     <Tabs
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
-          let iconName = route.name === "foods" ? "restaurant-menu" : "menu-book";
+          let iconName = route.name === "index" ? "restaurant-menu" : "menu-book";
           return <Icon name={iconName} size={32} color="rgba(18,57,6, 0.9)" />;
         },
         tabBarActiveTintColor: "tomato",
@@ -14,7 +14,7 @@ export default function RootLayout() {
         headerShown: false,
       })}
     >
-      <Tabs.Screen name="foods" options={{ title: "Ételek" }} />
+      <Tabs.Screen name="index" options={{ title: "Ételek" }} />
       <Tabs.Screen name="recipes" options={{ title: "Receptek" }} />
     </Tabs>
   );

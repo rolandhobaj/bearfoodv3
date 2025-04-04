@@ -28,7 +28,12 @@ const MenuList: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const loadRecipes = () => {
-    setIsLoading(false);
+    setIsLoading(true);
+    RecipeService.getAllRecipeDescriptions()
+    .then((recipes) => {
+      setRecipes(recipes.sort((a, b) => a.title.localeCompare(b.title)));
+      setIsLoading(false);
+    });
   }
 
   useEffect(() => {
