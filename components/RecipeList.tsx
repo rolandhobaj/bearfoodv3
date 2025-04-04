@@ -3,7 +3,7 @@ import { View, FlatList, Text } from 'react-native';
 import { CardItem } from './CardItem';
 import RecipeCard from './RecipeCard';
 import AutoFillTextBox from './AutoFillTextbox';
-import RecipeService from './Service/RecipeService';
+import RecipeService from '../Service/RecipeService';
 import NewRecipeButton from './NewRecipeButton';
 
 function removeHungarianAccents(input: string): string {

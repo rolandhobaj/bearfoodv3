@@ -1,4 +1,4 @@
-import app from '../Service/FirebaseApp';
+import app from './FirebaseApp';
 import {getFirestore} from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import * as FileSystem from "expo-file-system";
@@ -6,7 +6,7 @@ import * as FileSystem from "expo-file-system";
 import {collection, getDocs, setDoc, doc, deleteDoc} from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
-import { CardItem } from '.././CardItem';
+import { CardItem } from '../components/CardItem';
 
 const db = getFirestore(app);
 const storage = getStorage(app)

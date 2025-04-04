@@ -1,11 +1,12 @@
 import { ImageBackground, StyleSheet } from "react-native";
-import RecipeList from "./RecipeList";
+import RecipeList from "../components/RecipeList";
+import React from "react";
 
 export default function Index() {
   return (
     <ImageBackground source={require('./resources/bg.png')} resizeMode="cover" style={styles.image}>
-       <RecipeList/>
-    </ImageBackground>
+    <RecipeList/>
+  </ImageBackground>
   );
 }
 

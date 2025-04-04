@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { TextInput, View, FlatList, Text, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
-import RecipeService from './Service/RecipeService';
+import React, { useState } from 'react';
+import { TextInput, View, Text, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 
 interface AutoFillTextBoxProps {
   onOptionSelected: (option: string) => void;

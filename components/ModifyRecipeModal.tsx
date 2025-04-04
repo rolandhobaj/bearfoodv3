@@ -3,7 +3,7 @@ import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Keyb
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from "expo-image-picker";
-import RecipeService from './Service/RecipeService';
+import RecipeService from '../Service/RecipeService';
 
 interface ModalProps {
   isNewItem: boolean;

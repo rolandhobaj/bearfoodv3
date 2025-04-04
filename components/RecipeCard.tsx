@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from "@rneui/themed";
 import ModifyRecipeModal from './ModifyRecipeModal';
 
