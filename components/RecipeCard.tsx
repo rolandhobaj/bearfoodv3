@@ -18,7 +18,7 @@ interface CardProps {
 
 const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, id, recipe, ingredients, isReadonly, refreshList, setIsLoading }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
-
+  const [isLocalReadonly, setIsLocalReadonly] = useState<boolean>(isReadonly)
   const isNewItem = false;
 
   return (
@@ -29,17 +29,18 @@ const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, id, recipe, in
        style={styles.cardImage} />
       <Card.Title style={styles.text}>{title}</Card.Title>
     </Card>
-    {(isVisible && !isReadonly) && <ModifyRecipeModal
+    {(isVisible && !isLocalReadonly) && <ModifyRecipeModal
       id={id} 
       originalName={title}
       originalTags={tags}
       originalImage={imageUri}
       refreshList={refreshList}
       setIsLoading={setIsLoading}
-      isNewItem={isNewItem} visible={isVisible} onClose={() => setIsVisible(false)}/>}
-    {(isVisible && isReadonly) && <RecipeDetailsModal
+      isNewItem={isNewItem} visible={isVisible} onClose={() => {setIsLocalReadonly(isReadonly); setIsVisible(false);  }}/>}
+    {(isVisible && isLocalReadonly) && <RecipeDetailsModal
         id={id}
         originalName={title}
+        open={() => setIsLocalReadonly(false)}
         onClose={() => setIsVisible(false)} isVisible={isVisible} recipe={recipe} ingredients={ingredients}/>}
     </TouchableOpacity>
   );

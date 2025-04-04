@@ -4,13 +4,14 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 interface ModalProps {
     isVisible: boolean;
     onClose: () => void;
+    open:() => void;
     id: string;
     originalName: string,
     recipe: string,
     ingredients: string,
   }
 
-  const RecipeDetailsModal: React.FC<ModalProps> = ({ isVisible, onClose, id, originalName, recipe, ingredients}) => {
+  const RecipeDetailsModal: React.FC<ModalProps> = ({ isVisible, onClose, open, id, originalName, recipe, ingredients}) => {
 
     const handleClose = () => {
       onClose();
@@ -27,10 +28,15 @@ interface ModalProps {
                 <Text style={styles.header}>Elkészítés:</Text>
                 <Text style={styles.textBox}>{recipe}</Text>
               </ScrollView>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
               <TouchableOpacity onPress={handleClose}>
-            <Icon name="arrow-back" size={40} color="gray" />
-          </TouchableOpacity>
+                <Icon name="arrow-back" size={40} color="rgba(18,57,6, 0.9)" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={open}>
+                <Icon name="edit-note" size={40} color="rgba(18,57,6, 0.9)" />
+              </TouchableOpacity>
             </View>
+        </View>
         </View>
       </Modal>
     );
