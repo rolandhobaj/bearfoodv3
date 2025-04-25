@@ -29,6 +29,8 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
   const [hasNameError, setHasNameError] = useState(false);
   const [hasTagsError, setHasTagsError] = useState(false);
   const [hasImageUrl, setHasImageUrl] = useState(false);
+  const [hasIngredientsError, setHasIngredientsError] = useState(false);
+  const [hasRecipeError, setHasRecipeError] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   console.log(originalIngredients)
@@ -36,6 +38,10 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     setHasNameError(name === '');
     setHasTagsError(tags === '');
     setHasImageUrl(imageUrl === '');
+    if (isDetailedRecipe){
+      setHasRecipeError(recipe === '');
+      setHasIngredientsError(ingredients === '');
+    }
 
     if (name !== '' && tags !== '' && imageUrl != ''){
       setIsLoading(true)
@@ -72,6 +78,8 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     setName('');
     setTags('');
     setImageUrl('');
+    setRecipe('');
+    setIngredients('');
     onClose();
   }
 
@@ -135,7 +143,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
               value={ingredients}
               placeholder="Hozzávalók megadása..."
               onChangeText={setIngredients}
-              style={hasImageUrl ? styles.inputError : styles.higherInput}
+              style={hasIngredientsError ? styles.highInputError : styles.higherInput}
             />
             <Text style={styles.label}>Recept</Text>
             <TextInput
@@ -145,7 +153,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
               value={recipe}
               onChangeText={setRecipe}
               placeholder="Recept megadása..."
-              style={hasImageUrl ? styles.inputError : styles.highestInput}
+              style={hasRecipeError ? styles.highestInputError : styles.highestInput}
             />
           </View>
   ) : null
@@ -279,6 +287,24 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     height: 50,
+    marginBottom: 10,
+    width: `100%`
+  },
+  highInputError: {
+    borderWidth: 1,
+    borderColor: 'red',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    width: `100%`,
+    height: 120
+  },
+  highestInputError: {
+    borderWidth: 1,
+    borderColor: 'red',
+    borderRadius: 5,
+    padding: 10,
+    height: 200,
     marginBottom: 10,
     width: `100%`
   },
