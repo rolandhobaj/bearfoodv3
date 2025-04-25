@@ -75,13 +75,31 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
         return
       }
 
-      RecipeService.deleteItem(id, originalImage, !imageUrl.includes('firebasestorage'))
+      if (!isDetailedRecipe) {
+        RecipeService.deleteItem(id, originalImage, !imageUrl.includes('firebasestorage'))
+          .then(() => {
+            RecipeService.addRecipe({
+              title: name,
+              tags: tags.split(',').map(t => t.trim()),
+              imageUri: imageUrl,
+              id: 'toBeGenerated'
+            }).then(() => {
+              refreshList()
+            })
+          })
+
+        return
+      }
+
+      RecipeService.deleteDetailedItem(id, originalImage, !imageUrl.includes('firebasestorage'))
         .then(() => {
-          RecipeService.addRecipe({
+          RecipeService.addDetailedRecipe({
             title: name,
             tags: tags.split(',').map(t => t.trim()),
             imageUri: imageUrl,
-            id: 'toBeGenerated'
+            id: 'toBeGenerated',
+            ingredients: ingredients,
+            recipe: recipe
           }).then(() => {
             refreshList()
           })
@@ -169,7 +187,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
         onChangeText={setIngredients}
         style={hasIngredientsError ? styles.highInputError : styles.higherInput}
       />
-      <Text style={styles.label}>Recept</Text>
+      <Text style={styles.label}>Elkészítés</Text>
       <TextInput
         multiline
         scrollEnabled
