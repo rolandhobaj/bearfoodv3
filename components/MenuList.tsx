@@ -74,7 +74,7 @@ const MenuList: React.FC = () => {
             onRefresh={loadRecipes}
           />
       }
-      <NewRecipeButton refreshList={loadRecipes} setIsLoading={setIsLoading}/>
+      <NewRecipeButton refreshList={loadRecipes} setIsLoading={setIsLoading} hasDetails={false}/>
     </View>
   );
 };

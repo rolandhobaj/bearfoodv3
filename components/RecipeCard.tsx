@@ -38,6 +38,7 @@ const RecipeCard: React.FC<CardProps> = ({ title, tags, imageUri, id, recipe, in
       setIsLoading={setIsLoading}
       originalIngredients={ingredients}
       originalRecipe={recipe}
+      isDetailedRecipe={ingredients !== undefined && ingredients.length !== 0}
       isNewItem={isNewItem} visible={isVisible} onClose={() => {setIsLocalReadonly(isReadonly); setIsVisible(false);  }}/>}
     {(isVisible && isLocalReadonly) && <RecipeDetailsModal
         id={id}

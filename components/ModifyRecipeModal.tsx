@@ -15,11 +15,12 @@ interface ModalProps {
   originalImage: string,
   originalIngredients: string,
   originalRecipe: string,
+  isDetailedRecipe: boolean,
   refreshList: () => void;
   setIsLoading: (value: boolean) => void
 }
 
-const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, id, originalName, originalTags, originalImage, originalIngredients, originalRecipe, refreshList, setIsLoading}) => {
+const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, id, originalName, originalTags, originalImage, originalIngredients, originalRecipe, isDetailedRecipe, refreshList, setIsLoading}) => {
   const [name, setName] = useState(originalName);
   const [tags, setTags] = useState(originalTags);
   const [imageUrl, setImageUrl] = useState(originalImage);
@@ -30,8 +31,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
   const [hasImageUrl, setHasImageUrl] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
-  const isDetailedRecipe = ingredients && ingredients.length !==0
-
+  console.log(originalIngredients)
   const handleSave = () => {
     setHasNameError(name === '');
     setHasTagsError(tags === '');
@@ -133,6 +133,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
               scrollEnabled
               textAlignVertical="top"
               value={ingredients}
+              placeholder="Hozzávalók megadása..."
               onChangeText={setIngredients}
               style={hasImageUrl ? styles.inputError : styles.higherInput}
             />
@@ -143,6 +144,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
               textAlignVertical="top"
               value={recipe}
               onChangeText={setRecipe}
+              placeholder="Recept megadása..."
               style={hasImageUrl ? styles.inputError : styles.highestInput}
             />
           </View>

@@ -5,9 +5,10 @@ import ModifyRecipeModal from './ModifyRecipeModal';
 interface ModalProps {
   refreshList: () => void;
   setIsLoading: (value: boolean) => void;
+  hasDetails: boolean
 }
 
-const RoundButton: React.FC<ModalProps> = ({ refreshList, setIsLoading }) => {
+const RoundButton: React.FC<ModalProps> = ({ refreshList, setIsLoading, hasDetails }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const isNewItem = true;
@@ -17,7 +18,9 @@ const RoundButton: React.FC<ModalProps> = ({ refreshList, setIsLoading }) => {
         {isVisible && <ModifyRecipeModal 
         setIsLoading={setIsLoading}
         id=''
-        refreshList={refreshList}  originalName = '' originalTags = '' originalImage= ''  isNewItem={isNewItem} visible={isVisible} originalIngredients='' originalRecipe='' onClose={() => setIsVisible(false)}/>}
+        refreshList={refreshList}  originalName = '' originalTags = '' 
+        isDetailedRecipe={hasDetails}
+        originalImage= ''  isNewItem={isNewItem} visible={isVisible} originalIngredients='' originalRecipe='' onClose={() => setIsVisible(false)}/>}
     </TouchableOpacity>
   );
 };
