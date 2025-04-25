@@ -20,7 +20,7 @@ interface ModalProps {
   setIsLoading: (value: boolean) => void
 }
 
-const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, id, originalName, originalTags, originalImage, originalIngredients, originalRecipe, isDetailedRecipe, refreshList, setIsLoading}) => {
+const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, id, originalName, originalTags, originalImage, originalIngredients, originalRecipe, isDetailedRecipe, refreshList, setIsLoading }) => {
   const [name, setName] = useState(originalName);
   const [tags, setTags] = useState(originalTags);
   const [imageUrl, setImageUrl] = useState(originalImage);
@@ -38,39 +38,54 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     setHasNameError(name === '');
     setHasTagsError(tags === '');
     setHasImageUrl(imageUrl === '');
-    if (isDetailedRecipe){
+    if (isDetailedRecipe) {
       setHasRecipeError(recipe === '');
       setHasIngredientsError(ingredients === '');
     }
 
-    if (name !== '' && tags !== '' && imageUrl != ''){
+    if (name !== '' && tags !== '' && imageUrl != '' && (!isDetailedRecipe || (recipe !== '' && ingredients !== ''))) {
       setIsLoading(true)
       handleClose()
-      
-      if (isNewItem){  
-        RecipeService.addRecipe({
+
+      if (isNewItem) {
+        if (!isDetailedRecipe) {
+          RecipeService.addRecipe({
+            title: name,
+            tags: tags.split(',').map(t => t.trim()),
+            imageUri: imageUrl,
+            id: 'toBeGenerated'
+          }).then(() => {
+            refreshList()
+          })
+
+          return
+        }
+
+        RecipeService.addDetailedRecipe({
           title: name,
           tags: tags.split(',').map(t => t.trim()),
           imageUri: imageUrl,
-          id: 'toBeGenerated'
+          id: 'toBeGenerated',
+          ingredients: ingredients,
+          recipe: recipe
         }).then(() => {
-          refreshList()        
+          refreshList()
         })
 
         return
       }
 
       RecipeService.deleteItem(id, originalImage, !imageUrl.includes('firebasestorage'))
-      .then(() => {
-        RecipeService.addRecipe({
-          title: name,
-          tags: tags.split(',').map(t => t.trim()),
-          imageUri: imageUrl,
-          id: 'toBeGenerated'
-        }).then(() => {
-          refreshList()        
+        .then(() => {
+          RecipeService.addRecipe({
+            title: name,
+            tags: tags.split(',').map(t => t.trim()),
+            imageUri: imageUrl,
+            id: 'toBeGenerated'
+          }).then(() => {
+            refreshList()
+          })
         })
-      })
     }
   };
 
@@ -86,14 +101,23 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
   const deleteRecipe = () => {
     setIsLoading(true)
     handleClose()
-    RecipeService.deleteItem(id, originalImage, true)
-    .then(() => {
-      refreshList()
-    })
+
+    if (!isDetailedRecipe) {
+      RecipeService.deleteItem(id, originalImage, true)
+        .then(() => {
+          refreshList()
+        })
+      return
+    }
+
+    RecipeService.deleteDetailedItem(id, originalImage, true)
+      .then(() => {
+        refreshList()
+      })
   }
 
   const fetchCopiedImage = async () => {
-    const image = await Clipboard.getImageAsync({format: 'jpeg'});
+    const image = await Clipboard.getImageAsync({ format: 'jpeg' });
     setImageUrl(image?.data ?? '');
   };
   const takePhoto = async () => {
@@ -135,34 +159,34 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
 
   const detailedRecipe = isDetailedRecipe ? (
     <View>
-            <Text style={styles.label}>Hozzávalók</Text>
-            <TextInput
-              multiline
-              scrollEnabled
-              textAlignVertical="top"
-              value={ingredients}
-              placeholder="Hozzávalók megadása..."
-              onChangeText={setIngredients}
-              style={hasIngredientsError ? styles.highInputError : styles.higherInput}
-            />
-            <Text style={styles.label}>Recept</Text>
-            <TextInput
-              multiline
-              scrollEnabled
-              textAlignVertical="top"
-              value={recipe}
-              onChangeText={setRecipe}
-              placeholder="Recept megadása..."
-              style={hasRecipeError ? styles.highestInputError : styles.highestInput}
-            />
-          </View>
+      <Text style={styles.label}>Hozzávalók</Text>
+      <TextInput
+        multiline
+        scrollEnabled
+        textAlignVertical="top"
+        value={ingredients}
+        placeholder="Hozzávalók megadása..."
+        onChangeText={setIngredients}
+        style={hasIngredientsError ? styles.highInputError : styles.higherInput}
+      />
+      <Text style={styles.label}>Recept</Text>
+      <TextInput
+        multiline
+        scrollEnabled
+        textAlignVertical="top"
+        value={recipe}
+        onChangeText={setRecipe}
+        placeholder="Recept megadása..."
+        style={hasRecipeError ? styles.highestInputError : styles.highestInput}
+      />
+    </View>
   ) : null
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={handleClose}>
-       <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center' }}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}
-      style={{ backgroundColor: 'white', width: '80%', maxHeight: '90%', borderRadius: 12, flexGrow: 0 }}>
+      <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+        <ScrollView contentContainerStyle={{ padding: 20 }}
+          style={{ backgroundColor: 'white', width: '80%', maxHeight: '90%', borderRadius: 12, flexGrow: 0 }}>
           <Text style={styles.title}>Recept hozzáadása</Text>
           <Text style={styles.label}>Név</Text>
           <TextInput
@@ -178,46 +202,46 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
             onChangeText={setTags}
             placeholder="Cimke megadása..."
           />
-          
+
           {detailedRecipe}
 
           <Text style={styles.label}>Kép URL</Text>
-            <TextInput
-              value={imageUrl}
-              onChangeText={setImageUrl}
-              style={hasImageUrl ? styles.inputError : styles.input}
-            />
-          <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity style={styles.button} onPress={() => setImageUrl('')}>
-            <Icon name="delete" size={32} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={fetchCopiedImage}>
-            <Icon name="content-paste-go" size={32} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={takePhoto}>
-            <Icon name="photo-camera" size={32} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={pickImage}>
-            <Icon name="image" size={32} color="white" />
-          </TouchableOpacity>
+          <TextInput
+            value={imageUrl}
+            onChangeText={setImageUrl}
+            style={hasImageUrl ? styles.inputError : styles.input}
+          />
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity style={styles.button} onPress={() => setImageUrl('')}>
+              <Icon name="delete" size={32} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={fetchCopiedImage}>
+              <Icon name="content-paste-go" size={32} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={takePhoto}>
+              <Icon name="photo-camera" size={32} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={pickImage}>
+              <Icon name="image" size={32} color="white" />
+            </TouchableOpacity>
           </View>
-          {imageUrl !== '' && !isKeyboardVisible ? 
-                <Image source={{ uri: imageUrl }} style={styles.image}/>: null} 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 50, marginBottom: 20 }}>
-          <TouchableOpacity onPress={handleClose} style={{marginLeft:24}}>
-            <Icon name="close" size={40} color="red" />
-          </TouchableOpacity>
-          {!isNewItem ?
-          <TouchableOpacity onPress={deleteRecipe}>
-            <Icon name="delete" size={40} color="black" />
-          </TouchableOpacity>
-          : null
-          }
-          <TouchableOpacity onPress={handleSave} style={{marginRight:30}}>
-            <Icon name="check" size={40} color="green" />
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+          {imageUrl !== '' && !isKeyboardVisible ?
+            <Image source={{ uri: imageUrl }} style={styles.image} /> : null}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 50, marginBottom: 20 }}>
+            <TouchableOpacity onPress={handleClose} style={{ marginLeft: 24 }}>
+              <Icon name="close" size={40} color="red" />
+            </TouchableOpacity>
+            {!isNewItem ?
+              <TouchableOpacity onPress={deleteRecipe}>
+                <Icon name="delete" size={40} color="black" />
+              </TouchableOpacity>
+              : null
+            }
+            <TouchableOpacity onPress={handleSave} style={{ marginRight: 30 }}>
+              <Icon name="check" size={40} color="green" />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </View>
     </Modal>
   );
@@ -229,7 +253,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    height:'100%'
+    height: '100%'
   },
   modalContent: {
     backgroundColor: 'white',
@@ -309,14 +333,14 @@ const styles = StyleSheet.create({
     width: `100%`
   },
   image: {
-    width: 200, 
-    height: 200, 
+    width: 200,
+    height: 200,
     marginTop: 10,
     alignSelf: 'center',
     borderWidth: 1, borderColor: 'black'
   },
   button: {
-    flex:1,
+    flex: 1,
     backgroundColor: '#4E787D',
     padding: 4,
     borderRadius: 5,
@@ -330,11 +354,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'center',
   },
-  xButton:{
-    fontSize:22,
-    fontWeight:'bold',
-    marginTop:6,
-    marginLeft: 10 
+  xButton: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginTop: 6,
+    marginLeft: 10
   }
 });
 

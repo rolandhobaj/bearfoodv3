@@ -1,20 +1,20 @@
 import app from './FirebaseApp';
-import {getFirestore} from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import * as FileSystem from "expo-file-system";
 
-import {collection, getDocs, setDoc, doc, deleteDoc} from 'firebase/firestore';
+import { collection, getDocs, setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 import { CardItem } from '../components/CardItem';
 
 const db = getFirestore(app);
 const storage = getStorage(app)
-export function generateUUID(digits:number) {
+export function generateUUID(digits: number) {
   let str = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXZ';
   let uuid = [];
   for (let i = 0; i < digits; i++) {
-      uuid.push(str[Math.floor(Math.random() * str.length)]);
+    uuid.push(str[Math.floor(Math.random() * str.length)]);
   }
   return uuid.join('');
 }
@@ -29,9 +29,9 @@ export default class RecipeService {
       return {
         id: data.id,
         title: data.title,
-        tags: !Array.isArray(data.tags) ? data.tags.split(',').map((x : string) => x.trim()) : data.tags,
+        tags: !Array.isArray(data.tags) ? data.tags.split(',').map((x: string) => x.trim()) : data.tags,
         imageUri: data.imageUri
-    } as CardItem;
+      } as CardItem;
     })
   }
 
@@ -43,55 +43,80 @@ export default class RecipeService {
       return {
         id: data.id,
         title: data.name,
-        tags: !Array.isArray(data.tags) ? data.tags.split(',').map((x : string) => x.trim()) : data.tags,
+        tags: !Array.isArray(data.tags) ? data.tags.split(',').map((x: string) => x.trim()) : data.tags,
         imageUri: data.imageUri,
         recipe: data.recipe,
         ingredients: data.ingredients
-    } as CardItem;
+      } as CardItem;
     })
   }
 
-  static async addRecipe(recipe:CardItem) {
+  static async addRecipe(recipe: CardItem) {
     const newId = generateUUID(32);
-    try{
+    try {
 
-    const fileName = newId + '.jpg';
-    let imageUri = recipe.imageUri
+      const fileName = newId + '.jpg';
+      let imageUri = recipe.imageUri
 
-    if (!imageUri.includes('firebasestorage')){
-      imageUri = await this.uploadBase64AsBlob(recipe.imageUri, fileName);  
-    }
+      if (!imageUri.includes('firebasestorage')) {
+        imageUri = await this.uploadBase64AsBlob(recipe.imageUri, fileName);
+      }
 
-    await setDoc(doc(db, 'recipesV2', newId), {
-      id: newId,
-      title: recipe.title,
-      tags: recipe.tags.join(', '),
-      imageUri: imageUri,
-    });
+      await setDoc(doc(db, 'recipesV2', newId), {
+        id: newId,
+        title: recipe.title,
+        tags: recipe.tags.join(', '),
+        imageUri: imageUri,
+      });
 
-    }catch(e){
+    } catch (e) {
       console.log('ERROR' + e)
     }
   }
 
-  static async uploadBase64AsBlob(image: string, filePath: string) : Promise<string> {
+  static async addDetailedRecipe(recipe: CardItem) {
+    const newId = generateUUID(32);
+    try {
+
+      const fileName = newId + '.jpg';
+      let imageUri = recipe.imageUri
+
+      if (!imageUri.includes('firebasestorage')) {
+        imageUri = await this.uploadBase64AsBlob(recipe.imageUri, fileName);
+      }
+
+      await setDoc(doc(db, 'recipeDescriptions', newId), {
+        id: newId,
+        name: recipe.title,
+        tags: recipe.tags.join(', '),
+        imageUri: imageUri,
+        ingredients: recipe.ingredients,
+        recipe: recipe.recipe
+      });
+
+    } catch (e) {
+      console.log('ERROR' + e)
+    }
+  }
+
+  static async uploadBase64AsBlob(image: string, filePath: string): Promise<string> {
     try {
       let fileUri = image;
-      if (!image.startsWith('file://')){
+      if (!image.startsWith('file://')) {
         fileUri = FileSystem.cacheDirectory + "tempImage.jpg";
-  
+
         const base64Data = image.includes("base64,")
-        ? image.split("base64,")[1]
-        : image;
+          ? image.split("base64,")[1]
+          : image;
 
         // Base64 konvertálása fájllá
         await FileSystem.writeAsStringAsync(fileUri, base64Data, {
           encoding: FileSystem.EncodingType.Base64,
         });
       }
-      
+
       const downloadUrl = this.uploadFile(fileUri, filePath);
-  
+
       // Fájl törlése a cache-ből
       await FileSystem.deleteAsync(fileUri, { idempotent: true });
 
@@ -112,7 +137,7 @@ export default class RecipeService {
     return downloadUrl
   }
 
-  static urlToBlob(url: string) : Promise<Blob>{
+  static urlToBlob(url: string): Promise<Blob> {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.onerror = reject;
@@ -127,16 +152,33 @@ export default class RecipeService {
     });
   }
 
-  static async deleteItem(id:string, imageUrl: string, deleteImage: boolean) {
+  static async deleteItem(id: string, imageUrl: string, deleteImage: boolean) {
     await deleteDoc(doc(db, 'recipesV2', id));
 
-    if (!deleteImage){
+    if (!deleteImage) {
       return
     }
 
     const fileName = this.getFileNameFromUrl(imageUrl)
-    
-    if (fileName === ''){
+
+    if (fileName === '') {
+      return
+    }
+
+    const desertRef = ref(storage, fileName);
+    await deleteObject(desertRef);
+  }
+
+  static async deleteDetailedItem(id: string, imageUrl: string, deleteImage: boolean) {
+    await deleteDoc(doc(db, 'recipeDescriptions', id));
+
+    if (!deleteImage) {
+      return
+    }
+
+    const fileName = this.getFileNameFromUrl(imageUrl)
+
+    if (fileName === '') {
       return
     }
 
@@ -154,7 +196,7 @@ export default class RecipeService {
       return '';
     }
   };
-  
+
 
   /*static async deleteItem(recipeName, imageName, whenDone, deleteImage = true) {
     await deleteDoc(doc(db, 'recipes', recipeName));
