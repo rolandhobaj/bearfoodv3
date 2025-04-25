@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Keyboard } from 'react-native';
+import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Keyboard, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from "expo-image-picker";
@@ -12,19 +12,25 @@ interface ModalProps {
   id: string;
   originalName: string,
   originalTags: string,
-  originalImage: string
+  originalImage: string,
+  originalIngredients: string,
+  originalRecipe: string,
   refreshList: () => void;
   setIsLoading: (value: boolean) => void
 }
 
-const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, id, originalName, originalTags, originalImage, refreshList, setIsLoading}) => {
+const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, id, originalName, originalTags, originalImage, originalIngredients, originalRecipe, refreshList, setIsLoading}) => {
   const [name, setName] = useState(originalName);
   const [tags, setTags] = useState(originalTags);
   const [imageUrl, setImageUrl] = useState(originalImage);
+  const [ingredients, setIngredients] = useState(originalIngredients);
+  const [recipe, setRecipe] = useState(originalRecipe);
   const [hasNameError, setHasNameError] = useState(false);
   const [hasTagsError, setHasTagsError] = useState(false);
   const [hasImageUrl, setHasImageUrl] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const isDetailedRecipe = ingredients && ingredients.length !==0
 
   const handleSave = () => {
     setHasNameError(name === '');
@@ -119,10 +125,34 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     };
   }, []);
 
+  const detailedRecipe = isDetailedRecipe ? (
+    <View>
+            <Text style={styles.label}>Hozzávalók</Text>
+            <TextInput
+              multiline
+              scrollEnabled
+              textAlignVertical="top"
+              value={ingredients}
+              onChangeText={setIngredients}
+              style={hasImageUrl ? styles.inputError : styles.higherInput}
+            />
+            <Text style={styles.label}>Recept</Text>
+            <TextInput
+              multiline
+              scrollEnabled
+              textAlignVertical="top"
+              value={recipe}
+              onChangeText={setRecipe}
+              style={hasImageUrl ? styles.inputError : styles.highestInput}
+            />
+          </View>
+  ) : null
+
   return (
-    <Modal visible={visible} animationType="slide" transparent onRequestClose={() => handleClose()}>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={handleClose}>
+       <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}
+      style={{ backgroundColor: 'white', width: '80%', maxHeight: '90%', borderRadius: 12 }}>
           <Text style={styles.title}>Recept hozzáadása</Text>
           <Text style={styles.label}>Név</Text>
           <TextInput
@@ -138,6 +168,9 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
             onChangeText={setTags}
             placeholder="Cimke megadása..."
           />
+          
+          {detailedRecipe}
+
           <Text style={styles.label}>Kép URL</Text>
             <TextInput
               value={imageUrl}
@@ -174,7 +207,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
             <Icon name="check" size={40} color="green" />
           </TouchableOpacity>
         </View>
-        </View>
+      </ScrollView>
       </View>
     </Modal>
   );
@@ -186,12 +219,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    height:'100%'
   },
   modalContent: {
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
     width: '80%',
+    height: '95%'
   },
   title: {
     fontSize: 20,
@@ -217,6 +252,24 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: `100%`,
     height: 50
+  },
+  higherInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    width: `100%`,
+    height: 120
+  },
+  highestInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    width: `100%`,
+    height: 200
   },
   inputError: {
     borderWidth: 1,
