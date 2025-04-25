@@ -152,7 +152,7 @@ const ModifyRecipeModal: React.FC<ModalProps> = ({ isNewItem, visible, onClose, 
     <Modal visible={visible} animationType="slide" transparent onRequestClose={handleClose}>
        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center' }}>
       <ScrollView contentContainerStyle={{ padding: 20 }}
-      style={{ backgroundColor: 'white', width: '80%', maxHeight: '90%', borderRadius: 12 }}>
+      style={{ backgroundColor: 'white', width: '80%', maxHeight: '90%', borderRadius: 12, flexGrow: 0 }}>
           <Text style={styles.title}>Recept hozzáadása</Text>
           <Text style={styles.label}>Név</Text>
           <TextInput

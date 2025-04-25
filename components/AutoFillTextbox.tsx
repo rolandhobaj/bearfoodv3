@@ -76,6 +76,8 @@ const styles = StyleSheet.create({
     labelsContainer: {
         flexDirection: 'row',
         margin:10,
+        alignItems:'center',
+        justifyContent:'center'
       },
     label: {
         paddingHorizontal: 6,
